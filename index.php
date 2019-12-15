@@ -36,6 +36,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
         <h3>Sveiki, jūs esate prižiūrėtojas</h3>
         ';
         $navigation = '
+         <li><a href="zonelist.php">Zonu sarasas</a></li>
                 <li><a href="logout.php">Atsijungti</a></li>
                    ';
         include 'Template.php';
