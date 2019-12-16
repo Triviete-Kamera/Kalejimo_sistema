@@ -40,7 +40,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
         ';
         $navigation .= '
                 <li><a href="OffenseAdd.php">Registruoti Nusižengimą</a></li>
-                <li><a href="OffenseAdd.php">Registruoti Nusižengimą</a></li>
                    ';
         
     }

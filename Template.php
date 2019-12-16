@@ -19,6 +19,7 @@
             
             <nav id="navigation">
                 <ul id="nav">
+                    <li><a href="index.php">Pagrindinis</a></li>
                     <?php echo $navigation; ?>
                 </ul>
             </nav>
