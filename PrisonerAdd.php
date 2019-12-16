@@ -9,7 +9,7 @@ $birth = $startDate = $cell = $name = $lastname = $personalcode = "";
 $birth_err = $startDate_err = $cell_err = $name_err = $lastname_err = $personalcode_err = "";
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["vartotojo_tipas"] == 'administratorius' && isset($_SESSION['asmens_kodas'])) {
-	$navigation = '';
+	$navigation = $cells = '';
 	$cells = $prisonerController->GetCellOptions();
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 	 
@@ -17,8 +17,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["
 	    if(empty(trim($_POST["personalcode"]))){
 	        $personalcode_err = "Įveskite asmens kodą.";
 	    } else{
-	        // Prepare a select statement
-	        if(!empty($prisonerController->GetPrisoner(trim($_POST["personalcode"])))){
+	        
+	        if($prisonerController->GetPrisoner(trim($_POST["personalcode"])) != null){
 	        	$personalcode_err = "Toks kalinys jau yra.";
 	        }
 	        else{
@@ -33,32 +33,32 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["
 	    // Validate name
 	    if(empty(trim($_POST["name"]))){
 	        $name_err = "Įveskite varda.";  }
-	        else{
+	    else{
 	        $name = trim($_POST["name"]);
 	    }
 
 	        // Validate last name
 	    if(empty(trim($_POST["lastname"]))){
 	        $lastname_err = "Įveskite pavarde.";  }
-	        else{
+	    else{
 	        $lastname = trim($_POST["lastname"]);
 	    }
 
 	            // Validate email
 	    if(empty(trim($_POST["birth"]))){
 	        $birth_err = "Įveskite gimimo datą.";  }
-	        else{
+	    else{
 	        $birth = trim($_POST["birth"]);
 	    }
 	            // Validate tel
-	    if(empty(trim($_POST["cell"]))){
+	    if(empty(trim($_POST["cellform"]))){
 	        $cell_err = "Pasirinkite kamerą";  }
-	        else{
-	        $cell = trim($_POST["cell"]);
+	    else{
+	        $cell = trim($_POST["cellform"]);
 	    }
 	    if(empty(trim($_POST["startDate"]))){
 	        $startDate_err = "Įveskite Įkalinimo datą";  }
-	        else{
+	    else{
 	        $startDate = trim($_POST["startDate"]);
 	    }
 
@@ -67,7 +67,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["
 	    
 	    // Check input errors before inserting in database
 	    if(empty($personalcode_err) && empty($name_err) && empty($lastname_err )&& empty($birth_err ) && empty($cell_err )){
-	        $prisonerController->AddPrisoner($personalcode, $name, $lastname, $birth,'',$startDate, $_SESSION['asmens_kodas'], $cell);
+	        $prisonerController->AddPrisoner($personalcode, $name, $lastname, $birth,NULL,$startDate, $_SESSION['asmens_kodas'], $cell);
 	    }
 	}
 	       
@@ -105,7 +105,7 @@ $content = '
             </div>
             <div class="form-group '.((!empty($cell_err)) ? "has-error" : "").'">
                 <label>Kamera</label>
-                <select name="cell" class="form-control">
+                <select name="cellform" class="form-control">
                 	'.$cells.'
                 </select>
                 <span class="help-block">'.$cell_err.'</span>
