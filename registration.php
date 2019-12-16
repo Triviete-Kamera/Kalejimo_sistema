@@ -3,8 +3,8 @@
 require_once "Model/config.php";
  
 // Define variables and initialize with empty values
-$username = $password = $confirm_password = $name = $lastname = $email = $tel = $mail = $adress = $personalcode = $birth ="";
-$username_err = $password_err = $confirm_password_err = $name_err = $lastname_err = $email_err = $tel_err = $mail_err = $adress_err = $personalcode_err = $birth_err= "";
+$username = $password = $confirm_password = $name = $lastname = $email = $tel = $mail = $adress = $personalcode = $birth= $gender="";
+$username_err = $password_err = $confirm_password_err = $name_err = $lastname_err = $email_err = $tel_err = $mail_err = $adress_err = $personalcode_err = $birth_err= $gender_err= "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -14,7 +14,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $username_err = "Įveskite naudotojo vardą.";
     } else{
         // Prepare a select statement
-        $sql = "SELECT asmens_kodas FROM naudotojas WHERE slapyvardas = ?";
+        $sql = "SELECT asmens_kodas FROM naudotojas WHERE slapyvardis = ?";
         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -106,20 +106,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         else{
         $adress= trim($_POST["adress"]);
     }
+     if(!empty(trim($_POST["birth"]))){
+        $birth= trim($_POST["birth"]);
+    }
+    if(!empty(trim($_POST["gender"]))){
+        $gender= trim($_POST["gender"]);
+       // echo $gender;
+    }
 
 
 
     
     // Check input errors before inserting in database
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err ) && empty($personalcode_password_err )){
+        //echo $birth;
         $param_password = password_hash($password, PASSWORD_DEFAULT);
         // Prepare an insert statement
-        $sql = "INSERT INTO naudotojas (asmens_kodas,slapyvardis, slaptazodis,vardas,pavarde,el_pastas,tel_nr,pasto_kodas,adresas) VALUES ( '$personalcode','$username','$param_password','$name','$lastname','$email','$tel','$mail','$adress')";
-         mysqli_report(MYSQLI_REPORT_ALL);
-      // MYSQLI_REPORT_OFF;
+        $sql = "INSERT INTO naudotojas (asmens_kodas,slapyvardis, slaptazodis,vardas,pavarde,el_pastas,tel_nr,pasto_kodas,adresas,gimimo_data,lytis) VALUES ( '$personalcode','$username','$param_password','$name','$lastname','$email','$tel','$mail','$adress','$birth','$gender')";
+        // mysqli_report(MYSQLI_REPORT_ALL);
+       MYSQLI_REPORT_OFF;
         $result = mysqli_query($link,$sql) or die(mysqli_error());
        
-
+        header("location: login.php");
     }
     
     // Close connection
@@ -213,8 +221,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
             <div class="form-group <?php echo (!empty($gender_err)) ? 'has-error' : ''; ?>">
                 <label>Lytis</label>
-                <input type="cellform" name="birth" class="form-control" value="<?php echo $birth; ?>">
-                <span class="help-block"><?php echo $birth_err; ?></span>
+                <input type="radio" name="gender" value="moteris">Moteris
+                <input type="radio" name="gender" value="vyras">Vyras
+                
+                <span class="help-block"><?php echo $gender_err; ?></span>
             </div>
             
 
