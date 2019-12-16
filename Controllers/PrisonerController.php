@@ -118,10 +118,12 @@ class PrisonerController {
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->AddPrisoner(new PrisonerEntity($asmens_kodas,$vardas,$pavarde,$ikalinimo_data,$paleidimo_data,$gimimo_data,$administratorius_id,$kamera_id));
     }
-    function EditPrisoner($id, $asmens_kodas, $vardas, $pavarde, $gimimo_data, $paleidimo_data, $ikalinimo_data, $administratorius_id, $kamera_id){
+    function EditPrisoner($id, $asmens_kodas, $vardas, $pavarde, $gimimo_data, $paleidimo_data, $ikalinimo_data){
         $prisonerModel = new PrisonerModel();
-        $p = new PrisonerEntity($asmens_kodas,$vardas,$pavarde,$ikalinimo_data,$paleidimo_data,$gimimo_data,$administratorius_id,$kamera_id);
-        $p->id = $id;
-        return $prisonerModel->EditPrisoner($p);
+        return $prisonerModel->EditPrisoner($id, $asmens_kodas, $vardas, $pavarde, $gimimo_data, $paleidimo_data, $ikalinimo_data);
+    }
+    function EditPrisonerCell($id, $cell){
+        $prisonerModel = new PrisonerModel();
+        return $prisonerModel->EditPrisonerCell($id, $cell);
     }
 }
