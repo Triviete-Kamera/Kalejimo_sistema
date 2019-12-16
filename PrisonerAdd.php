@@ -9,8 +9,9 @@ $birth = $startDate = $cell = $name = $lastname = $personalcode = "";
 $birth_err = $startDate_err = $cell_err = $name_err = $lastname_err = $personalcode_err = "";
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["vartotojo_tipas"] == 'administratorius' && isset($_SESSION['asmens_kodas'])) {
-	$navigation = '';
+	$navigation = $cells = '';
 	$cells = $prisonerController->GetCellOptions();
+	print_r($cells);
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 	 
 	    // Validate id
@@ -33,32 +34,32 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["
 	    // Validate name
 	    if(empty(trim($_POST["name"]))){
 	        $name_err = "Įveskite varda.";  }
-	        else{
+	    else{
 	        $name = trim($_POST["name"]);
 	    }
 
 	        // Validate last name
 	    if(empty(trim($_POST["lastname"]))){
 	        $lastname_err = "Įveskite pavarde.";  }
-	        else{
+	    else{
 	        $lastname = trim($_POST["lastname"]);
 	    }
 
 	            // Validate email
 	    if(empty(trim($_POST["birth"]))){
 	        $birth_err = "Įveskite gimimo datą.";  }
-	        else{
+	    else{
 	        $birth = trim($_POST["birth"]);
 	    }
 	            // Validate tel
-	    if(empty(trim($_POST["cell"]))){
+	    if(empty(trim($_POST["cellform"]))){
 	        $cell_err = "Pasirinkite kamerą";  }
-	        else{
-	        $cell = trim($_POST["cell"]);
+	    else{
+	        $cell = trim($_POST["cellform"]);
 	    }
 	    if(empty(trim($_POST["startDate"]))){
 	        $startDate_err = "Įveskite Įkalinimo datą";  }
-	        else{
+	    else{
 	        $startDate = trim($_POST["startDate"]);
 	    }
 
@@ -105,7 +106,7 @@ $content = '
             </div>
             <div class="form-group '.((!empty($cell_err)) ? "has-error" : "").'">
                 <label>Kamera</label>
-                <select name="cell" class="form-control">
+                <select name="cellform" class="form-control">
                 	'.$cells.'
                 </select>
                 <span class="help-block">'.$cell_err.'</span>
