@@ -43,11 +43,11 @@ class PrisonerController {
     }
     function GetCellOptions() {
         $cells = $this->GetCells();
-        $result = "";
+        $res = "";
         foreach ($cells as $key => $value) {
-            $result .= "<option value ='$value'>$value</option>";
+            $res .= "<option value ='$value'>$value</option>";
         }
-        return $result;
+        return $res;
     }
      function GetPrisoners() {
         $prisonerModel = new PrisonerModel();
@@ -55,6 +55,7 @@ class PrisonerController {
     }
      function GetPrisoner($asmens_kodas) {
         $prisonerModel = new PrisonerModel();
+        print_r($prisonerModel->GetPrisoner($asmens_kodas));
         return $prisonerModel->GetPrisoner($asmens_kodas);
     }
     function GetCells() {

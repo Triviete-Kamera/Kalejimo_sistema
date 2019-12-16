@@ -1,6 +1,7 @@
 <?php
 class PrisonerEntity
 {
+    public $id;
     public $asmens_kodas;
     public $vardas;
     public $pavarde;

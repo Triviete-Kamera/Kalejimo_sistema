@@ -11,15 +11,14 @@ $birth_err = $startDate_err = $cell_err = $name_err = $lastname_err = $personalc
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["vartotojo_tipas"] == 'administratorius' && isset($_SESSION['asmens_kodas'])) {
 	$navigation = $cells = '';
 	$cells = $prisonerController->GetCellOptions();
-	print_r($cells);
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 	 
 	    // Validate id
 	    if(empty(trim($_POST["personalcode"]))){
 	        $personalcode_err = "Įveskite asmens kodą.";
 	    } else{
-	        // Prepare a select statement
-	        if(!empty($prisonerController->GetPrisoner(trim($_POST["personalcode"])))){
+	        
+	        if($prisonerController->GetPrisoner(trim($_POST["personalcode"])) != null){
 	        	$personalcode_err = "Toks kalinys jau yra.";
 	        }
 	        else{
@@ -68,7 +67,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["
 	    
 	    // Check input errors before inserting in database
 	    if(empty($personalcode_err) && empty($name_err) && empty($lastname_err )&& empty($birth_err ) && empty($cell_err )){
-	        $prisonerController->AddPrisoner($personalcode, $name, $lastname, $birth,'',$startDate, $_SESSION['asmens_kodas'], $cell);
+	        $prisonerController->AddPrisoner($personalcode, $name, $lastname, $birth,NULL,$startDate, $_SESSION['asmens_kodas'], $cell);
 	    }
 	}
 	       
