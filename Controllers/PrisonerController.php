@@ -15,6 +15,7 @@ class PrisonerController {
                     <td><b>Vardas Pavardė</b></td>
                     <td><b>Gimimo Data</b></td>
                     <td><b>Kalinimas</b></td>
+                    <td></td>
                     
                 </tr>";
 
@@ -23,7 +24,41 @@ class PrisonerController {
         foreach ($prisonerArray as $key => $value) {
             $result = $result .
                     "<tr>
-                        <td><a href='PrisonerEdit.php?update=$value->id' >Redaguoti</a> <a href='PrisonerAssign.php?update=$value->id' >Priskirti</a></td>
+                        <td><a href='PrisonerEdit.php?prisoner=$value->id' >Redaguoti</a> <a href='PrisonerAssign.php?prisoner=$value->id' >Priskirti</a></td>
+                        <td>$value->asmens_kodas</td>
+                        <td>$value->vardas $value->pavarde</td>
+                        <td>$value->gimimo_data</td>
+                        <td>$value->ikalinimo_data - $value->paleidimo_data</td>
+                        <td><a href='Offense.php?prisoner=$value->id' >Nusižengimai</a> </td>
+                         
+                    </tr>";
+        }
+        $size = count($prisonerArray);
+        if ($size<1) {
+            $result =  "<h3>Nėra kalinių.</h3>" ;         
+        }
+        else{
+
+        $result .=  "</table>";
+        }
+        return $result;
+    }
+    function CreateTable() {
+        $result = "
+            <table class='overViewTable'>
+                <tr>
+                    <td><b>Asmens Kodas</b></td>
+                    <td><b>Vardas Pavardė</b></td>
+                    <td><b>Gimimo Data</b></td>
+                    <td><b>Kalinimas</b></td>
+                    
+                </tr>";
+
+        $prisonerArray = $this->GetPrisoners();
+
+        foreach ($prisonerArray as $key => $value) {
+            $result = $result .
+                    "<tr>
                         <td>$value->asmens_kodas</td>
                         <td>$value->vardas $value->pavarde</td>
                         <td>$value->gimimo_data</td>
@@ -49,14 +84,30 @@ class PrisonerController {
         }
         return $res;
     }
+    function GetCellOptionsID($id) {
+        $cells = $this->GetCells();
+        $res = "";
+        foreach ($cells as $key => $value) {
+            if($value == $id){
+                $res .= "<option value ='$value' selected='selected'>$value</option>";
+            }else{
+                $res .= "<option value ='$value'>$value</option>";
+            }
+            
+        }
+        return $res;
+    }
      function GetPrisoners() {
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->GetPrisoners();
     }
      function GetPrisoner($asmens_kodas) {
         $prisonerModel = new PrisonerModel();
-        print_r($prisonerModel->GetPrisoner($asmens_kodas));
         return $prisonerModel->GetPrisoner($asmens_kodas);
+    }
+    function GetPrisonerId($id) {
+        $prisonerModel = new PrisonerModel();
+        return $prisonerModel->GetPrisonerId($id);
     }
     function GetCells() {
         $prisonerModel = new PrisonerModel();
@@ -66,5 +117,11 @@ class PrisonerController {
     function AddPrisoner($asmens_kodas, $vardas, $pavarde, $gimimo_data, $paleidimo_data, $ikalinimo_data, $administratorius_id, $kamera_id){
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->AddPrisoner(new PrisonerEntity($asmens_kodas,$vardas,$pavarde,$ikalinimo_data,$paleidimo_data,$gimimo_data,$administratorius_id,$kamera_id));
+    }
+    function EditPrisoner($id, $asmens_kodas, $vardas, $pavarde, $gimimo_data, $paleidimo_data, $ikalinimo_data, $administratorius_id, $kamera_id){
+        $prisonerModel = new PrisonerModel();
+        $p = new PrisonerEntity($asmens_kodas,$vardas,$pavarde,$ikalinimo_data,$paleidimo_data,$gimimo_data,$administratorius_id,$kamera_id);
+        $p->id = $id;
+        return $prisonerModel->EditPrisoner($p);
     }
 }

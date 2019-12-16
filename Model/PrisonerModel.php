@@ -53,7 +53,7 @@ class PrisonerModel {
         if($row == NULL){
             return NULL;
         }
-            $id = $row['id'];
+            $id = $row[0];
             $vardas = $row[1];
             $pavarde = $row[2];
             $ikalinimo_data = $row[3];
@@ -61,6 +61,37 @@ class PrisonerModel {
             $gimimo_data = $row[5];
             $administratorius_id = $row[6];
             $kamera_id = $row[7];
+
+        $prisoner = new PrisonerEntity($asmens_kodas,$vardas,$pavarde,$ikalinimo_data,$paleidimo_data,$gimimo_data,$administratorius_id,$kamera_id);
+        
+        mysqli_close($dbc);
+        return $prisoner;
+    }
+    function GetPrisonerId($id){
+         require ('Credentials.php');
+        //Open connection and Select database.     
+        $dbc=mysqli_connect($host, $user, $passwd,$database);
+        if(!$dbc){
+            die ("WTF" .mysql_error($dbc));
+        }
+
+        $query = "SELECT * FROM kalinys WHERE id='".$id."'";
+        $result = mysqli_query($dbc,$query) or die(mysql_error());
+
+        $row = mysqli_fetch_row($result);
+        //print_r($row);
+        if($row == NULL){
+            return NULL;
+        }
+            $id = $row[0];
+            $asmens_kodas = $row[1];
+            $vardas = $row[2];
+            $pavarde = $row[3];
+            $ikalinimo_data = $row[4];
+            $paleidimo_data = $row[5];
+            $gimimo_data = $row[6];
+            $administratorius_id = $row[7];
+            $kamera_id = $row[8];
 
         $prisoner = new PrisonerEntity($asmens_kodas,$vardas,$pavarde,$ikalinimo_data,$paleidimo_data,$gimimo_data,$administratorius_id,$kamera_id);
         
@@ -79,11 +110,31 @@ class PrisonerModel {
         $query = "INSERT INTO kalinys (asmens_kodas, vardas, pavarde, ikalinimo_data, paleidimo_data, gimimo_data, administratorius_id, kamera_id)
                     VALUES ('$prisoner->asmens_kodas', '$prisoner->vardas', '$prisoner->pavarde', '$prisoner->ikalinimo_data', '$prisoner->paleidimo_data', 
                             '$prisoner->gimimo_data', '$prisoner->administratorius_id', '$prisoner->kamera_id')";
-        if($prisoner->ikalinimo_data == NULL){
+        if($prisoner->paleidimo_data == NULL){
             $query = "INSERT INTO kalinys (asmens_kodas, vardas, pavarde, ikalinimo_data, paleidimo_data, gimimo_data, administratorius_id, kamera_id)
-                    VALUES ('$prisoner->asmens_kodas', '$prisoner->vardas', '$prisoner->pavarde', NULL, '$prisoner->paleidimo_data', 
+                    VALUES ('$prisoner->asmens_kodas', '$prisoner->vardas', '$prisoner->pavarde',  '$prisoner->paleidimo_data', NULL, 
                             '$prisoner->gimimo_data', '$prisoner->administratorius_id', '$prisoner->kamera_id')";
         }
+        $result = mysqli_query($dbc,$query) or die(mysql_error());
+        mysqli_close($dbc);
+    }
+    function EditPrisoner(PrisonerEntity $prisoner){
+         require ('Credentials.php');
+        //Open connection and Select database.     
+        $dbc=mysqli_connect($host, $user, $passwd,$database);
+        if(!$dbc){
+            die ("WTF" .mysql_error($dbc));
+        }
+
+        $query = "UPDATE kalinys SET asmens_kodas='$prisoner->asmens_kodas', vardas='$prisoner->vardas', pavarde='$prisoner->pavarde',
+                                     ikalinimo_data='$prisoner->ikalinimo_data', paleidimo_data='$prisoner->paleidimo_data', 
+                                     gimimo_data='$prisoner->gimimo_data' WHERE id='$prisoner->id'";
+        if($prisoner->paleidimo_data == NULL){
+            $query = "UPDATE kalinys SET asmens_kodas='$prisoner->asmens_kodas', vardas='$prisoner->vardas', pavarde='$prisoner->pavarde',
+                                     ikalinimo_data='$prisoner->ikalinimo_data', paleidimo_data=NULL, 
+                                     gimimo_data='$prisoner->gimimo_data' WHERE id='$prisoner->id'";
+        }
+        echo $query;
         $result = mysqli_query($dbc,$query) or die(mysql_error());
         mysqli_close($dbc);
     }
