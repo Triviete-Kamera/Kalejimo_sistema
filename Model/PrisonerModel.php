@@ -118,7 +118,7 @@ class PrisonerModel {
         $result = mysqli_query($dbc,$query) or die(mysql_error());
         mysqli_close($dbc);
     }
-    function EditPrisoner(PrisonerEntity $prisoner){
+    function EditPrisoner($id, $asmens_kodas, $vardas, $pavarde, $gimimo_data, $paleidimo_data, $ikalinimo_data){
          require ('Credentials.php');
         //Open connection and Select database.     
         $dbc=mysqli_connect($host, $user, $passwd,$database);
@@ -126,14 +126,28 @@ class PrisonerModel {
             die ("WTF" .mysql_error($dbc));
         }
 
-        $query = "UPDATE kalinys SET asmens_kodas='$prisoner->asmens_kodas', vardas='$prisoner->vardas', pavarde='$prisoner->pavarde',
-                                     ikalinimo_data='$prisoner->ikalinimo_data', paleidimo_data='$prisoner->paleidimo_data', 
-                                     gimimo_data='$prisoner->gimimo_data' WHERE id='$prisoner->id'";
-        if($prisoner->paleidimo_data == NULL){
-            $query = "UPDATE kalinys SET asmens_kodas='$prisoner->asmens_kodas', vardas='$prisoner->vardas', pavarde='$prisoner->pavarde',
-                                     ikalinimo_data='$prisoner->ikalinimo_data', paleidimo_data=NULL, 
-                                     gimimo_data='$prisoner->gimimo_data' WHERE id='$prisoner->id'";
+        $query = "UPDATE kalinys SET asmens_kodas='$asmens_kodas', vardas='$vardas', pavarde='$pavarde',
+                                     ikalinimo_data='$ikalinimo_data', paleidimo_data='$paleidimo_data', 
+                                     gimimo_data='$gimimo_data' WHERE id='$id'";
+        if($paleidimo_data == NULL){
+            $query = "UPDATE kalinys SET asmens_kodas='$asmens_kodas', vardas='$vardas', pavarde='$pavarde',
+                                     ikalinimo_data='$ikalinimo_data', paleidimo_data=NULL, 
+                                     gimimo_data='$gimimo_data' WHERE id='$id'";
         }
+        echo $query;
+        $result = mysqli_query($dbc,$query) or die(mysql_error());
+        mysqli_close($dbc);
+    }
+    function EditPrisonerCell($id, $cell){
+         require ('Credentials.php');
+        //Open connection and Select database.     
+        $dbc=mysqli_connect($host, $user, $passwd,$database);
+        if(!$dbc){
+            die ("WTF" .mysql_error($dbc));
+        }
+
+        $query = "UPDATE kalinys SET kamera_id='$cell' WHERE id='$id'";
+        
         echo $query;
         $result = mysqli_query($dbc,$query) or die(mysql_error());
         mysqli_close($dbc);

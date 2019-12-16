@@ -1,7 +1,7 @@
 <?php
 session_start();
 include "Controllers/PrisonerController.php";
-$title = "Kalinių sąrašas";
+$title = "Redaguoti Kalinį";
 
 $prisonerController = new PrisonerController();
 
@@ -31,12 +31,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["
 	    else{
 	        $birth = trim($_POST["birth"]);
 	    }
-	            // Validate tel
-	    if(empty(trim($_POST["cellform"]))){
-	        $cell_err = "Pasirinkite kamerą";  }
-	    else{
-	        $cell = trim($_POST["cellform"]);
-	    }
 	    if(empty(trim($_POST["startDate"]))){
 	        $startDate_err = "Įveskite Įkalinimo datą";  }
 	    else{
@@ -47,14 +41,13 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["
 
 	    
 	    // Check input errors before inserting in database
-	    if(empty($personalcode_err) && empty($name_err) && empty($lastname_err )&& empty($birth_err ) && empty($cell_err )){
-	        $prisonerController->EditPrisoner(trim($_POST["prisonerId"]),trim($_POST["personalcode"]), $name, $lastname, $birth,NULL,$startDate, $_SESSION['id'], $cell);
+	    if(empty($personalcode_err) && empty($name_err) && empty($lastname_err )&& empty($birth_err )){
+	        $prisonerController->EditPrisoner(trim($_POST["prisonerId"]),trim($_POST["personalcode"]), $name, $lastname, $birth,NULL,$startDate);
 	        header("location: PrisonerList.php");
 	    }
 	}
 	$prisonerid = $_GET['prisoner'];
 	$prisoner = $prisonerController->GetPrisonerId($prisonerid);
-	$cells = $prisonerController->GetCellOptionsID($prisoner->kamera_id);
 	if($id = NULL){
 		header("location: PrisonerList.php");
 	}
@@ -63,9 +56,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["
 }else{
 	header("location: index.php");
 }
-echo $prisonerid;
 $content = '
-        <h2>Kalinio Registracija</h2>
+        <h2>Kalinio Redagavimas</h2>
         <p>Prašome užpildyti duomenis.</p>
         <form action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" method="post">
         		<input type="hidden" id="prisonerId" name="prisonerId" value="'.$prisonerid.'">
@@ -93,13 +85,6 @@ $content = '
                 <label>Įkalinimo Data</label>
                 <input type="date" name="startDate" class="form-control" value="'.$prisoner->ikalinimo_data.'">
                 <span class="help-block">'.$startDate_err.'</span>
-            </div>
-            <div class="form-group '.((!empty($cell_err)) ? "has-error" : "").'">
-                <label>Kamera</label>
-                <select name="cellform" class="form-control">
-                	'.$cells.'
-                </select>
-                <span class="help-block">'.$cell_err.'</span>
             </div>
             
 

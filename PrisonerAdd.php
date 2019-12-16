@@ -1,7 +1,7 @@
 <?php
 session_start();
 include "Controllers/PrisonerController.php";
-$title = "Kalinių sąrašas";
+$title = "Prid4ti Kalinį";
 
 $prisonerController = new PrisonerController();
 
