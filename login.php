@@ -35,7 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
         echo $username;
-        $sql = "SELECT asmens_kodas, slapyvardas, slaptazodis, vartotojo_tipas  FROM naudotojas WHERE slapyvardas = ?";
+        $sql = "SELECT asmens_kodas, slapyvardis, slaptazodis, vartotojo_tipas  FROM naudotojas WHERE slapyvardis = ?";
        // mysqli_report(MYSQLI_REPORT_ALL);
         MYSQLI_REPORT_OFF;
         if($stmt = mysqli_prepare($link, $sql)){
@@ -62,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             // Store data in session variables
                             $_SESSION["loggedin"] = true;
                             $_SESSION["asmens_kodas"] = $id;
-                            $_SESSION["slapyvardas"] = $username;
+                            $_SESSION["slapyvardis"] = $username;
                             $_SESSION["vartotojo_tipas"] = $type;
                            
 
