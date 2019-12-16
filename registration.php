@@ -3,8 +3,8 @@
 require_once "Model/config.php";
  
 // Define variables and initialize with empty values
-$username = $password = $confirm_password = $name = $lastname = $email = $tel = $mail = $adress = $personalcode ="";
-$username_err = $password_err = $confirm_password_err = $name_err = $lastname_err = $email_err = $tel_err = $mail_err = $adress_err = $personalcode_err = "";
+$username = $password = $confirm_password = $name = $lastname = $email = $tel = $mail = $adress = $personalcode = $birth ="";
+$username_err = $password_err = $confirm_password_err = $name_err = $lastname_err = $email_err = $tel_err = $mail_err = $adress_err = $personalcode_err = $birth_err= "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -112,45 +112,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     // Check input errors before inserting in database
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err ) && empty($personalcode_password_err )){
-        
+        $param_password = password_hash($password, PASSWORD_DEFAULT);
         // Prepare an insert statement
-        $sql = "INSERT INTO naudotojas (asmens_kodas,slapyvardas, slaptazodis,vardas,pavarde,el_pastas,tel_nr,pasto_kodas,adresas ) VALUES ( ?,?,?,?,?,?,?,?,?)";
-        //mysqli_report(MYSQLI_REPORT_ALL);
+        $sql = "INSERT INTO naudotojas (asmens_kodas,slapyvardis, slaptazodis,vardas,pavarde,el_pastas,tel_nr,pasto_kodas,adresas) VALUES ( '$personalcode','$username','$param_password','$name','$lastname','$email','$tel','$mail','$adress')";
+         mysqli_report(MYSQLI_REPORT_ALL);
       // MYSQLI_REPORT_OFF;
-        
-        // echo $tel;
-        if($stmt = mysqli_prepare($link,$sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "issssssss", $param_personalcode, $param_username, $param_password,$param_name,$param_lastname,$param_email,$param_tel,$param_mail,$param_adress);
-            
-            // Set parameters
-            $param_personalcode = $personalcode;
-            $param_username = $username;
-            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
-            $param_name = $name;
-            $param_lastname= $lastname;
-            $param_email = $email;
-            $param_tel = $tel;
-            $param_mail = $mail;
-            $param_adress = $adress;
-            
-           
-            
+        $result = mysqli_query($link,$sql) or die(mysqli_error());
+       
 
-
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Redirect to login page
-                echo $tel;
-                header("location: login.php");
-            } else{
-                echo "Oopslogin.";
-            }
-        }
-         
-        // Close statement
-        mysqli_stmt_close($stmt);
     }
     
     // Close connection
@@ -236,6 +205,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <label>Adresas</label>
                 <input type="text" name="adress" class="form-control" value="<?php echo $adress; ?>">
                 <span class="help-block"><?php echo $adress_err; ?></span>
+            </div>
+             <div class="form-group <?php echo (!empty($birth_err)) ? 'has-error' : ''; ?>">
+                <label>Gimimo data</label>
+                <input type="date" name="birth" class="form-control" value="<?php echo $birth; ?>">
+                <span class="help-block"><?php echo $birth_err; ?></span>
+            </div>
+            <div class="form-group <?php echo (!empty($gender_err)) ? 'has-error' : ''; ?>">
+                <label>Lytis</label>
+                <input type="cellform" name="birth" class="form-control" value="<?php echo $birth; ?>">
+                <span class="help-block"><?php echo $birth_err; ?></span>
             </div>
             
 
