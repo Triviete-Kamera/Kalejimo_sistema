@@ -71,6 +71,32 @@ class PrisonerController {
         }
         return $result;
     }
+    function CreateOffenseTable($prisoner) {
+        $result = "
+            <table class='overViewTable'>
+                <tr>
+                    <td><b>Tipas</b></td>
+                    <td><b>Data</b></td>
+                    
+                </tr>";
+        $prisonerArray = $this->GetOffenses($prisoner);
+        foreach ($prisonerArray as $key => $value) {
+            $result = $result .
+                    "<tr>
+                        <td>$value->tipas</td>
+                        <td>$value->data</td>
+                         
+                    </tr>";
+        }
+        $size = count($prisonerArray);
+        if ($size<1) {
+            $result =  "<h3>Nėra nusižengimų.</h3>" ;         
+        }
+        else{
+        $result .=  "</table>";
+        }
+        return $result;
+    }
     function GetCellOptions() {
         $cells = $this->GetCells();
         $res = "";
@@ -92,9 +118,108 @@ class PrisonerController {
         }
         return $res;
     }
+    function GetOffenseReport($from, $to, $amount){
+        $reportArray = array();
+        $start = strtotime($from);
+        $diff = strtotime($to) - $start;
+        $step = $diff/$amount;
+        $theft = $murder = $kontra = $assou = $lawless = "";
+        for ($i=0; $i < $amount; $i++) { 
+            $end = $start + $step;
+            $startDate = date("Y-m-d", $start);
+            $endDate = date("Y-m-d", $end);
+            $data1 =$this->GetOffensesDate($startDate, $endDate, "vagyste");
+            $data2 =$this->GetOffensesDate($startDate, $endDate, "zmogzudyste");
+            $data3 =$this->GetOffensesDate($startDate, $endDate, "kontrobanda");
+            $data4 =$this->GetOffensesDate($startDate, $endDate, "smurtas");
+            $data5 =$this->GetOffensesDate($startDate, $endDate, "nepaklusnumas");
+            $label = $startDate." - ".$endDate;
+            $start += $step;
+
+            $theft .= '{  y: '.$data1.' , label: "'.$label.'"}';
+            $murder .= '{  y: '.$data2.' , label: "'.$label.'"}';
+            $kontra .= '{  y: '.$data3.' , label: "'.$label.'"}';
+            $assou .= '{  y: '.$data4.' , label: "'.$label.'"}';
+            $lawless .= '{  y: '.$data5.' , label: "'.$label.'"}';
+            if($i+1 !=$amount){
+                $theft .= ',';
+                $murder .= ',';
+                $kontra .= ',';
+                $assou .= ',';
+                $lawless .= ',';
+            }
+        }
+        $result = '
+            <script type="text/javascript">
+                window.onload = function () {
+                    var chart = new CanvasJS.Chart("chartContainer",
+                                {
+                                    title:{
+                                        text: "Nusikaltimai"
+                                    },
+                                    data: [
+                                        {
+                                            type: "stackedColumn",
+                                            legendText: "Vagystės",
+                                            showInLegend: "true",
+                                            dataPoints: [
+                                                '.$theft.'
+
+                                            ]
+                                        },  
+                                        {
+                                            type: "stackedColumn",
+                                            legendText: "Žmogžudystės",
+                                            showInLegend: "true",
+                                            dataPoints: [
+                                                '.$murder.'
+
+                                            ]
+                                        },  
+                                        {
+                                            type: "stackedColumn",
+                                            legendText: "Kontrobandos",
+                                            showInLegend: "true",
+                                            dataPoints: [
+                                                '.$kontra.'
+
+                                            ]
+                                        },
+                                        {
+                                            type: "stackedColumn",
+                                            legendText: "Smurtai",
+                                            showInLegend: "true",
+                                            dataPoints: [
+                                                '.$assou.'
+
+                                            ]
+                                        },
+                                        {
+                                            type: "stackedColumn",
+                                            legendText: "Nepaklusnumai",
+                                            showInLegend: "true",
+                                            dataPoints: [
+                                                '.$lawless.'
+
+                                            ]
+                                        }
+                                    ]
+                    }
+                );
+
+                chart.render();
+              }
+              </script>
+                    ';
+        return $result;
+    }
      function GetPrisoners() {
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->GetPrisoners();
+    }
+     function GetOffenses($id) {
+        $prisonerModel = new PrisonerModel();
+        return $prisonerModel->GetOffenses($id);
     }
      function GetPrisoner($asmens_kodas) {
         $prisonerModel = new PrisonerModel();
@@ -112,6 +237,10 @@ class PrisonerController {
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->AddPrisoner(new PrisonerEntity($asmens_kodas,$vardas,$pavarde,$ikalinimo_data,$paleidimo_data,$gimimo_data,$administratorius_id,$kamera_id));
     }
+    function AddOffense($tipas, $data, $kalinys_id){
+        $prisonerModel = new PrisonerModel();
+        return $prisonerModel->AddOffense($tipas, $data, $kalinys_id);
+    }
     function EditPrisoner($id, $asmens_kodas, $vardas, $pavarde, $gimimo_data, $paleidimo_data, $ikalinimo_data){
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->EditPrisoner($id, $asmens_kodas, $vardas, $pavarde, $gimimo_data, $paleidimo_data, $ikalinimo_data);
@@ -119,5 +248,9 @@ class PrisonerController {
     function EditPrisonerCell($id, $cell){
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->EditPrisonerCell($id, $cell);
+    }
+    function GetOffensesDate($from, $to, $type){
+        $prisonerModel = new PrisonerModel();
+        return $prisonerModel->GetOffensesDate($from, $to, $type);
     }
 }

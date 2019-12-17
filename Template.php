@@ -4,6 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="shortcut icon" href="favicon.ico" >
         <title><?php echo $title; ?></title>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
         <link rel="stylesheet" type="text/css" href="Styles/Stylesheet.css" />
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
