@@ -2,6 +2,7 @@
 //$path = $_SERVER['DOCUMENT_ROOT'];
 $path = __DIR__."/../Entities/PrisonerEntity.php";
 require($path);
+require( __DIR__."/../Entities/OffenseEntity.php");
 //Contains database related code for the Coffee page.
 class PrisonerModel {
    
@@ -176,6 +177,40 @@ class PrisonerModel {
         }
         mysqli_close($dbc);
         return $cellArray;
+    }
+    function GetOffenses($prisoner){
+         require ('Credentials.php');
+        //Open connection and Select database.     
+        $dbc=mysqli_connect($host, $user, $passwd,$database);
+        if(!$dbc){
+            die ("WTF" .mysql_error($dbc));
+        }
+        $query = "SELECT * FROM nusizengimas WHERE kalinys_id='$prisoner'";
+        $result = mysqli_query($dbc,$query) or die(mysql_error());
+        $offenseArray = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $id = $row['id'];
+            $tipas = $row['tipas'];
+            $data = $row['data'];
+            $kalinys_id = $row['kalinys_id'];
+            
+            $offense = new OffenseEntity($id,$tipas,$data,$kalinys_id);
+            array_push($offenseArray,$offense);
+        }
+        mysqli_close($dbc);
+        return $offenseArray;
+    }
+    function AddOffense($tipas, $data, $kalinys_id){
+         require ('Credentials.php');
+        //Open connection and Select database.     
+        $dbc=mysqli_connect($host, $user, $passwd,$database);
+        if(!$dbc){
+            die ("WTF" .mysql_error($dbc));
+        }
+        $query = "INSERT INTO nusizengimas (tipas, data, kalinys_id)
+                    VALUES ('$tipas', '$data', '$kalinys_id')";
+        $result = mysqli_query($dbc,$query) or die(mysql_error());
+        mysqli_close($dbc);
     }
    
 }
