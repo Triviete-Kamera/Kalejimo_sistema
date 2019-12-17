@@ -209,9 +209,23 @@ class PrisonerModel {
         }
         $query = "INSERT INTO nusizengimas (tipas, data, kalinys_id)
                     VALUES ('$tipas', '$data', '$kalinys_id')";
-        echo $query;
+        //echo $query;
         $result = mysqli_query($dbc,$query) or die(mysql_error());
         mysqli_close($dbc);
+    }
+    function GetOffensesDate($from, $to, $type){
+         require ('Credentials.php');
+        //Open connection and Select database.     
+        $dbc=mysqli_connect($host, $user, $passwd,$database);
+        if(!$dbc){
+            die ("WTF" .mysql_error($dbc));
+        }
+        $query = "SELECT * FROM nusizengimas WHERE tipas='$type' AND data>='$from' AND data<='$to'";
+        //echo $query;
+        $result = mysqli_query($dbc,$query) or die(mysql_error());
+        $sum = mysqli_num_rows($result);
+        mysqli_close($dbc);
+        return $sum;
     }
    
 }
