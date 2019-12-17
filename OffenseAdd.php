@@ -17,7 +17,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 	    
 
-	    $date = trim($_POST["date"]);
+	    $type = trim($_POST["type"]);
 	        // Validate last name
 	    if(empty(trim($_POST["date"]))){
 	        $date_err = "Įveskite datą.";  }
@@ -33,7 +33,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["
 	    // Check input errors before inserting in database
 	    if(empty($date_err) && !empty($prisonerId)){
 	        $prisonerController->AddOffense($type, $date,$prisonerId);
-	        header("location: PrisonerList.php");
+	        $location = "Offense.php?prisoner=".$prisonerId;
+	        header("location: ".$location);
 	    }
 	}
 	       

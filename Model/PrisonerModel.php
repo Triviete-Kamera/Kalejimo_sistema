@@ -209,6 +209,7 @@ class PrisonerModel {
         }
         $query = "INSERT INTO nusizengimas (tipas, data, kalinys_id)
                     VALUES ('$tipas', '$data', '$kalinys_id')";
+        echo $query;
         $result = mysqli_query($dbc,$query) or die(mysql_error());
         mysqli_close($dbc);
     }
