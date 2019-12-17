@@ -27,7 +27,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
         <h3>Sveiki, jūs esate virtuves darbuotojas</h3>
         ';
 
-        $navigation .= '<li><a href="SupplierList.php">Tiekeju sarasas</a></li>
+        $navigation .= '<li><a href="SuplierList.php">Tiekeju sarasas</a></li>
                    ';
 
 
