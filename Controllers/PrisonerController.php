@@ -1,12 +1,9 @@
 <?php
-
 //$path = $_SERVER['DOCUMENT_ROOT'];
 $path = __DIR__.'/../Model/PrisonerModel.php';
 require($path);
-
 class PrisonerController {
-
-	function CreateEditTable() {
+    function CreateEditTable() {
         $result = "
             <table class='overViewTable'>
                 <tr>
@@ -18,6 +15,7 @@ class PrisonerController {
                     <td></td>
                     
                 </tr>";
+
 
         $prisonerArray = $this->GetPrisoners();
 
@@ -53,9 +51,7 @@ class PrisonerController {
                     <td><b>Kalinimas</b></td>
                     
                 </tr>";
-
         $prisonerArray = $this->GetPrisoners();
-
         foreach ($prisonerArray as $key => $value) {
             $result = $result .
                     "<tr>
@@ -71,7 +67,6 @@ class PrisonerController {
             $result =  "<h3>Nėra kalinių.</h3>" ;         
         }
         else{
-
         $result .=  "</table>";
         }
         return $result;
@@ -113,7 +108,6 @@ class PrisonerController {
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->GetCells();
     }
-
     function AddPrisoner($asmens_kodas, $vardas, $pavarde, $gimimo_data, $paleidimo_data, $ikalinimo_data, $administratorius_id, $kamera_id){
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->AddPrisoner(new PrisonerEntity($asmens_kodas,$vardas,$pavarde,$ikalinimo_data,$paleidimo_data,$gimimo_data,$administratorius_id,$kamera_id));
