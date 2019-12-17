@@ -71,6 +71,32 @@ class PrisonerController {
         }
         return $result;
     }
+    function CreateOffenseTable($prisoner) {
+        $result = "
+            <table class='overViewTable'>
+                <tr>
+                    <td><b>Tipas</b></td>
+                    <td><b>Data</b></td>
+                    
+                </tr>";
+        $prisonerArray = $this->GetOffenses($prisoner);
+        foreach ($prisonerArray as $key => $value) {
+            $result = $result .
+                    "<tr>
+                        <td>$value->tipas</td>
+                        <td>$value->data</td>
+                         
+                    </tr>";
+        }
+        $size = count($prisonerArray);
+        if ($size<1) {
+            $result =  "<h3>Nėra nusižengimų.</h3>" ;         
+        }
+        else{
+        $result .=  "</table>";
+        }
+        return $result;
+    }
     function GetCellOptions() {
         $cells = $this->GetCells();
         $res = "";
@@ -96,6 +122,10 @@ class PrisonerController {
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->GetPrisoners();
     }
+     function GetOffenses($id) {
+        $prisonerModel = new PrisonerModel();
+        return $prisonerModel->GetOffenses($id);
+    }
      function GetPrisoner($asmens_kodas) {
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->GetPrisoner($asmens_kodas);
@@ -111,6 +141,10 @@ class PrisonerController {
     function AddPrisoner($asmens_kodas, $vardas, $pavarde, $gimimo_data, $paleidimo_data, $ikalinimo_data, $administratorius_id, $kamera_id){
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->AddPrisoner(new PrisonerEntity($asmens_kodas,$vardas,$pavarde,$ikalinimo_data,$paleidimo_data,$gimimo_data,$administratorius_id,$kamera_id));
+    }
+    function AddOffense($tipas, $data, $kalinys_id){
+        $prisonerModel = new PrisonerModel();
+        return $prisonerModel->AddOffense($tipas, $data, $kalinys_id);
     }
     function EditPrisoner($id, $asmens_kodas, $vardas, $pavarde, $gimimo_data, $paleidimo_data, $ikalinimo_data){
         $prisonerModel = new PrisonerModel();
