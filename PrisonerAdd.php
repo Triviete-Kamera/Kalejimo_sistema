@@ -5,10 +5,10 @@ $title = "Pridėti Kalinį";
 
 $prisonerController = new PrisonerController();
 
-$type = $date = "";
-$type_err = $date_err = "";
+$birth = $startDate = $cell = $name = $lastname = $personalcode = "";
+$birth_err = $startDate_err = $cell_err = $name_err = $lastname_err = $personalcode_err = "";
 
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["vartotojo_tipas"] == 'administratorius') {
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION["vartotojo_tipas"] == 'administratorius' && isset($_SESSION['id'])) {
 	$navigation = $cells = '';
 	$cells = $prisonerController->GetCellOptions();
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -89,7 +89,28 @@ $content = '
                 <input type="text" name="name" class="form-control" value="">
                 <span class="help-block">'.$name_err.'</span>
             </div>
-            
+            <div class="form-group '.((!empty($lastname_err)) ? "has-error" : "").'">
+                <label>Pavarde</label>
+                <input type="text" name="lastname" class="form-control" value="">
+                <span class="help-block">'.$lastname_err.'</span>
+            </div>
+            <div class="form-group '.((!empty($birth_err)) ? "has-error" : "").'">
+                <label>Gimimo Data</label>
+                <input type="date" name="birth" class="form-control" value="">
+                <span class="help-block">'.$birth_err.'</span>
+            </div>
+            <div class="form-group '.((!empty($startDate_err)) ? "has-error" : "").'">
+                <label>Įkalinimo Data</label>
+                <input type="date" name="startDate" class="form-control" value="">
+                <span class="help-block">'.$startDate_err.'</span>
+            </div>
+            <div class="form-group '.((!empty($cell_err)) ? "has-error" : "").'">
+                <label>Kamera</label>
+                <select name="cellform" class="form-control">
+                	'.$cells.'
+                </select>
+                <span class="help-block">'.$cell_err.'</span>
+            </div>
             
 
             <div class="form-group">

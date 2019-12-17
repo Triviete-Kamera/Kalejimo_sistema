@@ -118,6 +118,101 @@ class PrisonerController {
         }
         return $res;
     }
+    function GetOffenseReport($from, $to, $amount){
+        $reportArray = array();
+        $start = strtotime($from);
+        $diff = strtotime($to) - $start;
+        $step = $diff/$amount;
+        $theft = $murder = $kontra = $assou = $lawless = "";
+        for ($i=0; $i < $amount; $i++) { 
+            $end = $start + $step;
+            $startDate = date("Y-m-d", $start);
+            $endDate = date("Y-m-d", $end);
+            $data1 =$this->GetOffensesDate($startDate, $endDate, "vagyste");
+            $data2 =$this->GetOffensesDate($startDate, $endDate, "zmogzudyste");
+            $data3 =$this->GetOffensesDate($startDate, $endDate, "kontrobanda");
+            $data4 =$this->GetOffensesDate($startDate, $endDate, "smurtas");
+            $data5 =$this->GetOffensesDate($startDate, $endDate, "nepaklusnumas");
+            $label = $startDate." - ".$endDate;
+            $start += $step;
+
+            $theft .= '{  y: '.$data1.' , label: "'.$label.'"}';
+            $murder .= '{  y: '.$data2.' , label: "'.$label.'"}';
+            $kontra .= '{  y: '.$data3.' , label: "'.$label.'"}';
+            $assou .= '{  y: '.$data4.' , label: "'.$label.'"}';
+            $lawless .= '{  y: '.$data5.' , label: "'.$label.'"}';
+            if($i+1 !=$amount){
+                $theft .= ',';
+                $murder .= ',';
+                $kontra .= ',';
+                $assou .= ',';
+                $lawless .= ',';
+            }
+        }
+        $result = '
+            <script type="text/javascript">
+                window.onload = function () {
+                    var chart = new CanvasJS.Chart("chartContainer",
+                                {
+                                    title:{
+                                        text: "Nusikaltimai"
+                                    },
+                                    data: [
+                                        {
+                                            type: "stackedColumn",
+                                            legendText: "Vagystės",
+                                            showInLegend: "true",
+                                            dataPoints: [
+                                                '.$theft.'
+
+                                            ]
+                                        },  
+                                        {
+                                            type: "stackedColumn",
+                                            legendText: "Žmogžudystės",
+                                            showInLegend: "true",
+                                            dataPoints: [
+                                                '.$murder.'
+
+                                            ]
+                                        },  
+                                        {
+                                            type: "stackedColumn",
+                                            legendText: "Kontrobandos",
+                                            showInLegend: "true",
+                                            dataPoints: [
+                                                '.$kontra.'
+
+                                            ]
+                                        },
+                                        {
+                                            type: "stackedColumn",
+                                            legendText: "Smurtai",
+                                            showInLegend: "true",
+                                            dataPoints: [
+                                                '.$assou.'
+
+                                            ]
+                                        },
+                                        {
+                                            type: "stackedColumn",
+                                            legendText: "Nepaklusnumai",
+                                            showInLegend: "true",
+                                            dataPoints: [
+                                                '.$lawless.'
+
+                                            ]
+                                        }
+                                    ]
+                    }
+                );
+
+                chart.render();
+              }
+              </script>
+                    ';
+        return $result;
+    }
      function GetPrisoners() {
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->GetPrisoners();
@@ -153,5 +248,9 @@ class PrisonerController {
     function EditPrisonerCell($id, $cell){
         $prisonerModel = new PrisonerModel();
         return $prisonerModel->EditPrisonerCell($id, $cell);
+    }
+    function GetOffensesDate($from, $to, $type){
+        $prisonerModel = new PrisonerModel();
+        return $prisonerModel->GetOffensesDate($from, $to, $type);
     }
 }
