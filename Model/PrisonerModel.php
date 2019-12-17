@@ -66,8 +66,12 @@ class PrisonerModel {
         if(!$dbc){
             die ("WTF" .mysql_error($dbc));
         }
+
         $query = "SELECT * FROM kalinys WHERE id='".$id."'";
         $result = mysqli_query($dbc,$query) or die(mysql_error());
+
+
+
         $row = mysqli_fetch_row($result);
         //print_r($row);
         if($row == NULL){
@@ -82,11 +86,13 @@ class PrisonerModel {
             $gimimo_data = $row[6];
             $administratorius_id = $row[7];
             $kamera_id = $row[8];
+
         $prisoner = new PrisonerEntity($asmens_kodas,$vardas,$pavarde,$ikalinimo_data,$paleidimo_data,$gimimo_data,$administratorius_id,$kamera_id);
         
         mysqli_close($dbc);
         return $prisoner;
     }
+
     function AddPrisoner(PrisonerEntity $prisoner){
          require ('Credentials.php');
         //Open connection and Select database.     
@@ -112,6 +118,7 @@ class PrisonerModel {
         if(!$dbc){
             die ("WTF" .mysql_error($dbc));
         }
+
         $query = "UPDATE kalinys SET asmens_kodas='$asmens_kodas', vardas='$vardas', pavarde='$pavarde',
                                      ikalinimo_data='$ikalinimo_data', paleidimo_data='$paleidimo_data', 
                                      gimimo_data='$gimimo_data' WHERE id='$id'";
@@ -131,6 +138,7 @@ class PrisonerModel {
         if(!$dbc){
             die ("WTF" .mysql_error($dbc));
         }
+
         $query = "UPDATE kalinys SET kamera_id='$cell' WHERE id='$id'";
         
         echo $query;

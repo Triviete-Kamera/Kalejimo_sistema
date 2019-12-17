@@ -15,7 +15,10 @@ class PrisonerController {
                     <td></td>
                     
                 </tr>";
+
+
         $prisonerArray = $this->GetPrisoners();
+
         foreach ($prisonerArray as $key => $value) {
             $result = $result .
                     "<tr>
@@ -33,6 +36,7 @@ class PrisonerController {
             $result =  "<h3>Nėra kalinių.</h3>" ;         
         }
         else{
+
         $result .=  "</table>";
         }
         return $result;
