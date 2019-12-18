@@ -1,8 +1,6 @@
 <?php
 
-$path = $_SERVER['DOCUMENT_ROOT'];
-$path .= "/Model/zoneModel.php";
-require($path);
+require(__DIR__."/../Model/zoneModel.php");
 
 class ZoneController {
 
