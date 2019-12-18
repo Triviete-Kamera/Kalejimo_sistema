@@ -1,7 +1,5 @@
 <?php
-$path = $_SERVER['DOCUMENT_ROOT'];
-$path .= "/Entities/ScheduleEntity.php";
-require($path);
+require( __DIR__."/../Entities/ScheduleEntity.php");
 
 //Contains database related code for the Coffee page.
 class ScheduleModel {
