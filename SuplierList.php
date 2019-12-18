@@ -1,11 +1,11 @@
 <?php
-
+session_start();
 $content = '
         <h3>Tiekėjų sąrašas</h3><br />'
 ;
 
-$navigation = '<li><a href="index.php">Tiekeju salinimas</a></li>
-				<li><a href="index.php">Tiekeju pridejimas</a></li>
+$navigation = '<li><a href="Supplier_delete.php">Tiekeju salinimas</a></li>
+				<li><a href="Supplier_add.php">Tiekeju pridejimas</a></li>
                    ';
 #include 'Template.php';
 include 'Model/config.php';
