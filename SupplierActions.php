@@ -54,7 +54,11 @@ if(isset($_SESSION['prev'])&& $_SESSION['prev'] == "delete")
         if ($naikinti == $del)
         {
             $sql = "DELETE FROM tiekejas WHERE id='$id'";
-            mysqli_query($link, $sql);
+            $l = mysqli_query($link, $sql);
+            if(!$l)
+            {
+                echo "".$l.mysqli_error($link);
+            }
         }
 
     }
