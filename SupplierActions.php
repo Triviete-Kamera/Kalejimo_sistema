@@ -3,7 +3,7 @@ session_start();
 $content = '';
 include 'Model/config.php';
 
-if(isset($_SESSION['prev'])=="add")
+if(isset($_SESSION['prev'])&& $_SESSION['prev']=="add")
 {
     $navigation = '<li><a href="Supplier_delete.php">Tiekėjų šalinimas</a></li>
 				<li><a href="SuplierList.php">Tiekėjų sąrašas</a></li>';
@@ -39,7 +39,7 @@ if(isset($_SESSION['prev'])=="add")
     }
 }
 
-if(isset($_SESSION['prev']) == "delete")
+if(isset($_SESSION['prev'])&& $_SESSION['prev'] == "delete")
 {
     $navigation = '<li><a href="Supplier_add.php">Tiekėjų pridėjimas</a></li>
 				<li><a href="SuplierList.php">Tiekėjų sąrašas</a></li>';
