@@ -1,8 +1,11 @@
 <?php
 session_start();
+$content = '';
 if(isset($_SESSION['prev'])=="sup_actions")
 {
-    $content.=$_SESSION['error'];
+	if(isset($_SESSION['error'])){
+    	$content.=$_SESSION['error'];
+	}
     $content.='<br />';
 }
 include 'Model/config.php';
