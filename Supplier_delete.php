@@ -2,7 +2,7 @@
 session_start();
 include 'Model/config.php';
 $_SESSION['prev'] = "delete";
-$content .= '<h3>Tiekėjų šalinimas</h3><br />';
+$content = '<h3>Tiekėjų šalinimas</h3><br />';
 $navigation = '<li><a href="Supplier_add.php">Tiekėjų pridėjimas</a></li>
 				<li><a href="SuplierList.php">Tiekėjų sąrašas</a></li>
                    ';
