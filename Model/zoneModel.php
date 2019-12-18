@@ -1,7 +1,5 @@
 <?php
-$path = $_SERVER['DOCUMENT_ROOT'];
-$path .= "/Entities/zoneEntity.php";
-require($path);
+require(__DIR__."/../Entities/zoneEntity.php");
 
 //Contains database related code for the Coffee page.
 class ZoneModel {

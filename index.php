@@ -24,10 +24,10 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     }
 	else if ($_SESSION["vartotojo_tipas"] == 'valgyklos_darbuotojas') {
 		$content = '
-        <h3>Sveiki, jūs esate virtuves darbuotojas</h3>
+        <h3>Sveiki, jūs esate virtuvės darbuotojas</h3>
         ';
 
-        $navigation .= '<li><a href="SuplierList.php">Tiekeju sarasas</a></li>
+        $navigation .= '<li><a href="SuplierList.php">Tiekejų sąrašas</a></li>
                    ';
 
 
@@ -49,7 +49,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
         <h3>Sveiki, jūs esate prižiūrėtojas</h3>
         ';
         $navigation .= '
-                <li><a href="ZoneList.php">Zonų sąrašas</a></li>
                 <li><a href="ScheduleCreate.php">Naujas Tvarkaraštis</a></li>
                    ';
         
