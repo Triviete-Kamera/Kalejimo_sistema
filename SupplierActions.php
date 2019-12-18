@@ -1,10 +1,12 @@
 <?php
 session_start();
+$content = '';
 include 'Model/config.php';
-$navigation = '<li><a href="Supplier_delete.php">Tiekeju salinimas</a></li>
-				<li><a href="SuplierList.php">Tiekeju sąrašas</a></li>';
+
 if(isset($_SESSION['prev'])=="add")
 {
+    $navigation = '<li><a href="Supplier_delete.php">Tiekėjų šalinimas</a></li>
+				<li><a href="SuplierList.php">Tiekėjų sąrašas</a></li>';
     $_SESSION['prev'] = "sup_actions";
     if(isset($_POST['pavadinimas']) && isset($_POST['e_pastas']) && isset($_POST['tel_nr'])&& isset($_POST['adresas']))
     {
@@ -35,5 +37,27 @@ if(isset($_SESSION['prev'])=="add")
             $content =  "Tiekėjas sėkmingai pridėtas";
         }
     }
+}
+
+if(isset($_SESSION['prev']) == "delete")
+{
+    $navigation = '<li><a href="Supplier_add.php">Tiekėjų pridėjimas</a></li>
+				<li><a href="SuplierList.php">Tiekėjų sąrašas</a></li>';
+    $sql = "SELECT id, pavadinimas, el_pastas, tel_nr, adresas FROM tiekejas";
+    $result = mysqli_query($link, $sql);
+
+    while($row = mysqli_fetch_assoc($result))
+    {
+        $id=$row['id'];
+        $del='naikinti_'.$id;
+        $naikinti=(isset($_POST['naikinti_'.$id]));
+        if ($naikinti == $del)
+        {
+            $sql = "DELETE FROM tiekejas WHERE id='$id'";
+            mysqli_query($link, $sql);
+        }
+
+    }
+    $content = "Pasirinkti tiekėjai sėkmingai pašalinti";
 }
 include 'Template.php';
